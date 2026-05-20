@@ -62,6 +62,52 @@
     color:var(--terracotta);font-weight:600;
   }
   .kicker::before,.kicker::after{content:"✦";margin:0 .55em;opacity:.6}
+
+  /* ---------- Edit mode toggle ---------- */
+  .edit-toggle{
+    position:absolute; top:14px; right:18px; z-index:2;
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--paper-2); color:var(--ink-soft);
+    border:1px solid var(--line); border-radius:999px;
+    padding:7px 14px; font:600 11.5px/1 'Spline Sans',sans-serif;
+    letter-spacing:.06em; text-transform:uppercase; cursor:pointer;
+    transition:background .2s, color .2s, border-color .2s;
+  }
+  .edit-toggle:hover{background:#e3d2a8}
+  .edit-toggle.active{
+    background:var(--green); color:#fff; border-color:var(--green);
+  }
+  .edit-toggle.active:hover{background:#356b3f}
+  body:not(.edit-mode) input:not([type=file]),
+  body:not(.edit-mode) textarea,
+  body:not(.edit-mode) .star-row,
+  body:not(.edit-mode) .add-point,
+  body:not(.edit-mode) .del-point,
+  body:not(.edit-mode) .del-reviewer,
+  body:not(.edit-mode) #addBtn,
+  body:not(.edit-mode) #resetBtn{
+    pointer-events:none;
+  }
+  body:not(.edit-mode) .add-point,
+  body:not(.edit-mode) .del-point,
+  body:not(.edit-mode) .del-reviewer,
+  body:not(.edit-mode) #addBtn,
+  body:not(.edit-mode) #resetBtn{
+    opacity:.35;
+  }
+  body:not(.edit-mode) input:focus,
+  body:not(.edit-mode) textarea:focus{outline:none}
+
+  /* Tiny sync status indicator */
+  .sync-dot{
+    display:inline-block; width:7px; height:7px; border-radius:50%;
+    background:#9aa; vertical-align:middle; margin-right:4px;
+    transition:background .3s;
+  }
+  .sync-dot.ok{background:#3f7d4a}
+  .sync-dot.saving{background:#cf971f; animation:pulse 1s infinite}
+  .sync-dot.err{background:#b53e2e}
+  @keyframes pulse{50%{opacity:.3}}
   h1{
     font-family:'Fraunces',serif;font-weight:900;font-size:clamp(28px,4.6vw,46px);
     line-height:1.04;margin:6px 0 2px;letter-spacing:-.01em;
@@ -415,11 +461,39 @@
     .grid{grid-template-columns:1fr}
   }
 </style>
+<!-- ═══ Firebase (synchronisation en ligne) ═══ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc, onSnapshot }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC5d_DD9BxbKZ9lGcnC8jeEKnQI7WypweY",
+    authDomain: "avis-jeu.firebaseapp.com",
+    projectId: "avis-jeu",
+    storageBucket: "avis-jeu.firebasestorage.app",
+    messagingSenderId: "803655515387",
+    appId: "1:803655515387:web:1aedc696bba97f049cc45e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+  // single shared document for this site
+  const docRef = doc(db, "fiches", "avis-jeu");
+
+  // expose to the rest of the script
+  window.__FB = { db, docRef, getDoc, setDoc, onSnapshot };
+  window.dispatchEvent(new Event("firebase-ready"));
+</script>
 </head>
 <body>
 <div class="wrap">
 
   <header class="sheet">
+    <button class="edit-toggle" id="editToggle" type="button" title="Activer le mode édition">
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="editToggleIcon">🔒</span> <span id="editToggleLabel">Mode lecture</span>
+    </button>
     <div class="kicker">Fiche d'évaluation</div>
     <h1>Tableau d'avis</h1>
     <input class="game-name" id="gameName" placeholder="Nom de votre jeu de société…" autocomplete="off">
@@ -465,8 +539,7 @@
   <input type="file" id="importInput" accept=".html,.htm,.json" hidden="">
 
   <div class="save-hint">
-    💡 Vos avis sont enregistrés <b>sur ce PC et ce navigateur uniquement</b> — un fichier HTML ne peut pas se synchroniser tout seul entre ordinateurs.
-    Pour les retrouver ailleurs&nbsp;: cliquez sur <b>⬇ Exporter</b>, transférez le fichier obtenu sur l'autre PC, puis ouvrez-le (ou utilisez <b>⬆ Importer</b> pour y charger la sauvegarde).
+    💡 Les avis sont <b>synchronisés en ligne</b> et visibles par tout le monde. Pour modifier, cliquez sur le bouton <b>🔒 Mode lecture</b> en haut à droite et entrez le mot de passe d'édition.
   </div>
 
   <div class="share-notice" id="shareNotice" hidden="">
@@ -499,6 +572,27 @@
 (function(){
   "use strict";
   const STORAGE_KEY = "boardgame-review:v1";
+
+  /* ═══ Firebase / sync state ═══ */
+  const EDIT_PASSWORD = "CroqueDé2026*";
+  let isEditMode = false;
+  let suspendSnapshot = false;     // pause incoming updates while we save
+  let unsubSnapshot = null;        // unsubscribe function for onSnapshot
+  let pendingFirebaseSave = null;
+  let firebaseSaveTimer = null;
+
+  // wait until the Firebase init script has run
+  function whenFirebaseReady(cb){
+    if(window.__FB){ cb(window.__FB); return; }
+    window.addEventListener("firebase-ready", () => cb(window.__FB), { once:true });
+  }
+
+  function setSyncDot(cls){
+    const d = document.getElementById("syncDot");
+    if(!d) return;
+    d.classList.remove("ok","saving","err");
+    if(cls) d.classList.add(cls);
+  }
 
   /* Pristine copy of this file, captured before the app fills anything in.
      Used by "Exporter pour partager" to embed the current data into a copy. */
@@ -574,12 +668,38 @@
   let sharedDataAvailable = null;   // raw JSON of embedded data, if a notice should show
 
   function save(){
-    if(!Store.available) return;
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(async () => {
-      try { await Store.set(JSON.stringify(state)); }
-      catch(e){ console.warn("Sauvegarde impossible:", e); }
-    }, 400);
+    // local save (kept as a cache / backup)
+    if(Store.available){
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(async () => {
+        try { await Store.set(JSON.stringify(state)); }
+        catch(e){ console.warn("Sauvegarde locale impossible:", e); }
+      }, 400);
+    }
+    // online save (only when an editor is logged in)
+    if(isEditMode) saveToFirebase();
+  }
+
+  /* push current `state` to Firebase, debounced */
+  function saveToFirebase(){
+    clearTimeout(firebaseSaveTimer);
+    setSyncDot("saving");
+    firebaseSaveTimer = setTimeout(() => {
+      whenFirebaseReady(async ({ docRef, setDoc }) => {
+        try {
+          suspendSnapshot = true;
+          // store as { json: "..." } so Firestore doesn't care about the shape
+          await setDoc(docRef, { json: JSON.stringify(state), updatedAt: Date.now() });
+          setSyncDot("ok");
+        } catch(e){
+          console.warn("Firebase save failed:", e);
+          setSyncDot("err");
+        } finally {
+          // re-enable incoming updates a moment later (let the echo pass)
+          setTimeout(() => { suspendSnapshot = false; }, 800);
+        }
+      });
+    }, 600);
   }
 
   // parse a JSON string, validate and migrate it into `state`. returns true on success.
@@ -1057,6 +1177,75 @@
     shareNotice.hidden = true;
   });
 
+  /* ---------- realtime sync (Firebase) ---------- */
+  function setupRealtimeSync(){
+    whenFirebaseReady(({ docRef, onSnapshot, setDoc }) => {
+      unsubSnapshot = onSnapshot(docRef, async (snap) => {
+        if(suspendSnapshot) return;     // ignore the echo of our own writes
+        if(snap.exists()){
+          const data = snap.data();
+          if(data && typeof data.json === "string"){
+            try {
+              if(applyState(data.json)){
+                gameNameInput.value = state.gameName || "";
+                if(!state.reviewers.length) state.reviewers.push(newReviewer());
+                renderGeneral();
+                render();
+                setSyncDot("ok");
+              }
+            } catch(e){ console.warn("Sync read failed:", e); }
+          }
+        } else {
+          // first ever connection: seed the cloud doc with current data
+          try {
+            await setDoc(docRef, { json: JSON.stringify(state), updatedAt: Date.now() });
+            setSyncDot("ok");
+          } catch(e){
+            console.warn("Initial seed failed:", e);
+            setSyncDot("err");
+          }
+        }
+      }, (err) => {
+        console.warn("Firestore listener error:", err);
+        setSyncDot("err");
+      });
+    });
+  }
+
+  /* ---------- edit-mode toggle ---------- */
+  function setupEditToggle(){
+    const btn   = document.getElementById("editToggle");
+    const icon  = document.getElementById("editToggleIcon");
+    const label = document.getElementById("editToggleLabel");
+    if(!btn) return;
+    btn.addEventListener("click", () => {
+      if(isEditMode){
+        // turn OFF
+        isEditMode = false;
+        document.body.classList.remove("edit-mode");
+        btn.classList.remove("active");
+        icon.textContent  = "🔒";
+        label.textContent = "Mode lecture";
+        btn.title = "Activer le mode édition";
+        toast("Mode lecture activé");
+      } else {
+        const pwd = prompt("Mot de passe d'édition :");
+        if(pwd === null) return;        // cancel
+        if(pwd !== EDIT_PASSWORD){
+          toast("Mot de passe incorrect");
+          return;
+        }
+        isEditMode = true;
+        document.body.classList.add("edit-mode");
+        btn.classList.add("active");
+        icon.textContent  = "🔓";
+        label.textContent = "Mode édition";
+        btn.title = "Repasser en mode lecture";
+        toast("Édition activée ✓");
+      }
+    });
+  }
+
   /* ---------- init ---------- */
   (async function init(){
     await load();
@@ -1065,6 +1254,8 @@
     renderGeneral();
     render();
     if(sharedDataAvailable) shareNotice.hidden = false;
+    setupEditToggle();
+    setupRealtimeSync();
   })();
 })();
 </script></body></html>
