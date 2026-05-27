@@ -459,134 +459,6 @@
   }
   .gen-head{margin-bottom:18px}
   .gen-title{
-    font-family:'Fraunces',serif;font-weight:900;font-size:clamp(20px,3vw,28px);    -webkit-font-smoothing:antialiased;
-    padding:32px 18px 60px;
-    position:relative;
-  }
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
-  }
-  .wrap{max-width:1180px;margin:0 auto;position:relative;z-index:1}
-
-  /* ---------- Header ---------- */
-  header.sheet{
-    background:var(--card);
-    border:1.5px solid var(--card-edge);
-    border-radius:14px;
-    padding:30px 34px;
-    box-shadow:0 18px 40px -22px var(--shadow);
-    position:relative;
-  }
-  header.sheet::after{
-    content:"";position:absolute;inset:6px;border:1px solid var(--line);
-    border-radius:9px;pointer-events:none;
-  }
-  .kicker{
-    font-size:11px;letter-spacing:.32em;text-transform:uppercase;
-    color:var(--terracotta);font-weight:600;
-  }
-  .kicker::before,.kicker::after{content:"✦";margin:0 .55em;opacity:.6}
-
-  /* ---------- Edit mode toggle ---------- */
-  .edit-toggle{
-    position:absolute; top:14px; right:18px; z-index:2;
-    display:inline-flex; align-items:center; gap:6px;
-    background:var(--paper-2); color:var(--ink-soft);
-    border:1px solid var(--line); border-radius:999px;
-    padding:7px 14px; font:600 11.5px/1 'Spline Sans',sans-serif;
-    letter-spacing:.06em; text-transform:uppercase; cursor:pointer;
-    transition:background .2s, color .2s, border-color .2s;
-  }
-  .edit-toggle:hover{background:#e3d2a8}
-  .edit-toggle.active{
-    background:var(--green); color:#fff; border-color:var(--green);
-  }
-  .edit-toggle.active:hover{background:#356b3f}
-  body:not(.edit-mode) input:not([type=file]),
-  body:not(.edit-mode) textarea,
-  body:not(.edit-mode) .star-row,
-  body:not(.edit-mode) .add-point,
-  body:not(.edit-mode) .del-point,
-  body:not(.edit-mode) .del-reviewer,
-  body:not(.edit-mode) #addBtn,
-  body:not(.edit-mode) #resetBtn{
-    pointer-events:none;
-  }
-  body:not(.edit-mode) .add-point,
-  body:not(.edit-mode) .del-point,
-  body:not(.edit-mode) .del-reviewer,
-  body:not(.edit-mode) #addBtn,
-  body:not(.edit-mode) #resetBtn{
-    opacity:.35;
-  }
-  body:not(.edit-mode) input:focus,
-  body:not(.edit-mode) textarea:focus{outline:none}
-
-  /* Tiny sync status indicator */
-  .sync-dot{
-    display:inline-block; width:7px; height:7px; border-radius:50%;
-    background:#9aa; vertical-align:middle; margin-right:4px;
-    transition:background .3s;
-  }
-  .sync-dot.ok{background:#3f7d4a}
-  .sync-dot.saving{background:#cf971f; animation:pulse 1s infinite}
-  .sync-dot.err{background:#b53e2e}
-  @keyframes pulse{50%{opacity:.3}}
-  h1{
-    font-family:'Fraunces',serif;font-weight:900;font-size:clamp(28px,4.6vw,46px);
-    line-height:1.04;margin:6px 0 2px;letter-spacing:-.01em;
-  }
-  .game-name{
-    width:100%;border:none;background:transparent;
-    font-family:'Fraunces',serif;font-style:italic;font-weight:500;
-    font-size:clamp(19px,2.6vw,26px);color:var(--teal);
-    border-bottom:2px dashed var(--line);padding:4px 2px 6px;margin-top:8px;
-  }
-  .game-name:focus{outline:none;border-bottom-color:var(--terracotta)}
-  .game-name::placeholder{color:#b6a884;font-style:italic}
-
-  /* ---------- Summary ---------- */
-  .summary{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px;
-  }
-  .sum-stat{
-    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;
-    padding:14px 16px;
-  }
-  .sum-stat .lbl{
-    font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--ink-soft);font-weight:600;
-  }
-  .sum-stat .val{
-    font-family:'Fraunces',serif;font-weight:900;font-size:34px;line-height:1;
-    margin:6px 0 8px;
-  }
-  .sum-stat .val small{font-size:15px;color:var(--ink-soft);font-weight:600}
-  .bar{height:7px;border-radius:4px;background:#d9c8a2;overflow:hidden}
-  .bar > i{display:block;height:100%;border-radius:4px;transition:width .4s ease}
-  .sum-stat[data-cat=fun] .val,.sum-stat[data-cat=fun] .bar i{color:var(--gold)}
-  .sum-stat[data-cat=fun] .bar i{background:var(--gold)}
-  .sum-stat[data-cat=strat] .val,.sum-stat[data-cat=strat] .bar i{color:var(--teal)}
-  .sum-stat[data-cat=strat] .bar i{background:var(--teal)}
-  .sum-stat[data-cat=cplx] .val,.sum-stat[data-cat=cplx] .bar i{color:var(--rust)}
-  .sum-stat[data-cat=cplx] .bar i{background:var(--rust)}
-  .sum-stat[data-cat=count]{
-    background:var(--ink);border-color:var(--ink);
-    display:flex;flex-direction:column;justify-content:center;
-  }
-  .sum-stat[data-cat=count] .lbl{color:#c9b98f}
-  .sum-stat[data-cat=count] .val{color:var(--paper);margin:4px 0 0}
-
-  /* ---------- General panel ---------- */
-  .general-panel{
-    background:var(--card);border:1.5px solid var(--card-edge);border-radius:13px;
-    border-top:5px solid var(--teal);
-    padding:22px 26px 26px;margin-top:20px;
-    box-shadow:0 14px 30px -20px var(--shadow);
-  }
-  .gen-head{margin-bottom:18px}
-  .gen-title{
     font-family:'Fraunces',serif;font-weight:900;font-size:clamp(20px,3vw,28px);
     line-height:1.04;margin-top:3px;
   }
@@ -910,14 +782,119 @@
   window.__FB = { db, docRef, getDoc, setDoc, onSnapshot };
   window.dispatchEvent(new Event("firebase-ready"));
 </script>
+
+<!-- QR code library (used in admin mode to generate the public submission QR) -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body>
+
+<!-- ═══ Vue publique (formulaire ouvert aux joueurs, via ?soumettre) ═══ -->
+<div class="public-wrap" id="publicWrap">
+  <div class="public-card">
+    <h1 id="publicTitle">Donne ton avis !</h1>
+    <div class="subtitle" id="publicSubtitle">Partage ton ressenti après avoir joué.</div>
+
+    <div class="my-submissions" id="mySubmissions" style="display:none">
+      <h4>Tes avis déjà déposés</h4>
+      <div id="mySubmissionsList"></div>
+    </div>
+
+    <div id="publicSuccess" class="public-success" style="display:none"></div>
+  </div>
+
+  <div id="publicForms"></div>
+
+  <div class="public-actions">
+    <div class="left">
+      <button class="public-btn" id="addAnotherFormBtn" type="button">+ Ajouter un autre avis</button>
+    </div>
+    <div class="right">
+      <button class="public-btn primary" id="submitAllBtn" type="button">📤 Envoyer mes avis</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Modale Admin (panneau de modération + QR + filtres) ═══ -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-box">
+    <button class="modal-close" id="adminModalClose" type="button">×</button>
+    <h2>💬 Avis du public</h2>
+
+    <div class="subtabs">
+      <button class="subtab active" data-subtab="pending" type="button">
+        🕓 En attente <span class="count-pill" id="countPending">0</span>
+      </button>
+      <button class="subtab" data-subtab="trash" type="button">
+        🗑️ Corbeille <span class="count-pill" id="countTrash">0</span>
+      </button>
+      <button class="subtab" data-subtab="qr" type="button">
+        📱 QR code
+      </button>
+      <button class="subtab" data-subtab="spam" type="button">
+        🚫 Filtres
+      </button>
+    </div>
+
+    <div class="subtab-panel" data-panel="pending">
+      <div id="pendingList"><div class="empty-state">Aucun avis en attente.</div></div>
+    </div>
+
+    <div class="subtab-panel" data-panel="trash" style="display:none">
+      <div id="trashList"><div class="empty-state">La corbeille est vide.</div></div>
+    </div>
+
+    <div class="subtab-panel" data-panel="qr" style="display:none">
+      <div class="qr-block">
+        <div class="qr-canvas-wrap">
+          <canvas id="qrCanvas"></canvas>
+          <button class="public-btn primary" id="qrDownloadBtn" type="button">⬇ Télécharger en PNG</button>
+        </div>
+        <div class="qr-fields">
+          <label>URL pointée par le QR code</label>
+          <input type="url" id="qrUrlInput" placeholder="https://...">
+          <label>Couleur des modules</label>
+          <div class="color-row">
+            <input type="color" id="qrColorDark" value="#000000">
+            <span style="font-size:13px;color:var(--ink-soft)">Couleur principale</span>
+          </div>
+          <label>Couleur de fond</label>
+          <div class="color-row">
+            <input type="color" id="qrColorLight" value="#ffffff">
+            <span style="font-size:13px;color:var(--ink-soft)">Couleur d'arrière-plan</span>
+          </div>
+          <label>Logo au centre (optionnel)</label>
+          <div class="logo-row">
+            <input type="file" id="qrLogoInput" accept="image/*">
+            <button class="public-btn" id="qrLogoRemove" type="button">Retirer</button>
+          </div>
+          <label style="margin-top:14px">Taille (px)</label>
+          <input type="number" id="qrSizeInput" value="320" min="120" max="1024" step="20">
+        </div>
+      </div>
+    </div>
+
+    <div class="subtab-panel" data-panel="spam" style="display:none">
+      <div class="spam-help">
+        🚫 <b>Filtres anti-spam.</b> Tout avis déposé contenant <b>un de ces mots ou expressions</b>
+        (insensible à la casse) sera <b>automatiquement envoyé à la corbeille puis supprimé définitivement</b>,
+        sans que tu aies besoin d'intervenir. Tu peux mettre des mots simples ou des phrases entières.
+      </div>
+      <ul class="spam-list" id="spamList"></ul>
+      <button class="public-btn" id="addSpamFilterBtn" type="button">+ Ajouter un filtre</button>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
 
   <header class="sheet">
     <button class="edit-toggle" id="editToggle" type="button" title="Activer le mode édition">
       <span class="sync-dot" id="syncDot"></span>
       <span id="editToggleIcon">🔒</span> <span id="editToggleLabel">Mode lecture</span>
+    </button>
+    <button class="admin-btn" id="adminBtn" type="button" title="Avis du public + paramètres">
+      💬 <span>Avis public</span>
+      <span class="pending-bubble zero" id="pendingBubble">0</span>
     </button>
     <div class="kicker">Fiche d'évaluation</div>
     <h1>Tableau d'avis</h1>
@@ -1145,6 +1122,13 @@
       if(!Array.isArray(r.modifications) || !r.modifications.length) r.modifications = [""];
       r.negatives = normNeg(r.negatives);
     });
+    // --- new structures for the public reviews system ---
+    if(!Array.isArray(state.pending)) state.pending = [];
+    if(!Array.isArray(state.trash))   state.trash = [];
+    if(!Array.isArray(state.spamFilters)) state.spamFilters = [];
+    if(!state.qrConfig || typeof state.qrConfig !== "object"){
+      state.qrConfig = { url:"", colorDark:"#000000", colorLight:"#ffffff", size:320, logo:"" };
+    }
     return true;
   }
 
@@ -1617,6 +1601,7 @@
                 renderGeneral();
                 render();
                 setSyncDot("ok");
+                window.dispatchEvent(new Event("state-synced"));
               }
             } catch(e){ console.warn("Sync read failed:", e); }
           }
@@ -1671,6 +1656,642 @@
     });
   }
 
+  /* ═════════════════════════════════════════════════════════════════
+     ════════════════  PUBLIC REVIEWS SYSTEM  ════════════════════════
+     ═════════════════════════════════════════════════════════════════ */
+
+  const PUBLIC_PARAM = "soumettre";
+  const MY_SUBS_KEY  = "bgr-my-public-submissions:v1";
+
+  /* ---------- helpers ---------- */
+  function isPublicView(){
+    const sp = new URLSearchParams(window.location.search);
+    return sp.has(PUBLIC_PARAM);
+  }
+  function formatDate(ts){
+    if(!ts) return "";
+    try {
+      const d = new Date(ts);
+      return d.toLocaleDateString("fr-FR", { day:"2-digit", month:"short", year:"numeric" })
+        + " " + d.toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
+    } catch { return ""; }
+  }
+  function escHtml(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g,
+      c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  }
+  function nonEmpty(arr){
+    if(!Array.isArray(arr)) return [];
+    return arr.filter(x => x && (typeof x === "string" ? x.trim() : (x.text||"").trim()));
+  }
+  function getMySubmissions(){
+    try { return JSON.parse(localStorage.getItem(MY_SUBS_KEY) || "[]"); }
+    catch { return []; }
+  }
+  function setMySubmissions(arr){
+    try { localStorage.setItem(MY_SUBS_KEY, JSON.stringify(arr)); } catch {}
+  }
+  function addMySubmission(id){
+    const list = getMySubmissions();
+    if(!list.includes(id)){ list.push(id); setMySubmissions(list); }
+  }
+
+  /* find a pending review by id, regardless of where it lives */
+  function findPending(id){ return (state.pending || []).find(p => p.id === id) || null; }
+  function findTrash(id){   return (state.trash   || []).find(p => p.id === id) || null; }
+
+  /* ---------- spam filter ---------- */
+  function isSpam(submission){
+    const filters = (state.spamFilters || []).map(s => (s||"").trim().toLowerCase()).filter(Boolean);
+    if(!filters.length) return false;
+    const blob = [
+      submission.name, submission.general,
+      ...(submission.positives||[]),
+      ...(submission.negatives||[]),
+      ...(submission.modifications||[])
+    ].join(" \n ").toLowerCase();
+    return filters.some(f => blob.includes(f));
+  }
+
+  /* ---------- bubble ---------- */
+  function updatePendingBubble(){
+    const bubble = document.getElementById("pendingBubble");
+    if(!bubble) return;
+    const n = (state.pending || []).length;
+    bubble.textContent = n;
+    bubble.classList.toggle("zero", n === 0);
+  }
+
+  /* ═══════════════ PUBLIC SUBMISSION VIEW ═══════════════ */
+
+  function setupPublicView(){
+    if(!isPublicView()) return;
+    document.body.classList.add("public-view");
+
+    const titleEl = document.getElementById("publicTitle");
+    const subEl   = document.getElementById("publicSubtitle");
+    if(state.gameName) titleEl.textContent = "Ton avis sur \"" + state.gameName + "\"";
+
+    renderMySubmissions();
+    renderPublicForms([emptyPublicForm()]);
+
+    document.getElementById("addAnotherFormBtn").addEventListener("click", () => {
+      const cur = collectPublicForms({ stripEmpty:false });
+      cur.push(emptyPublicForm());
+      renderPublicForms(cur);
+    });
+    document.getElementById("submitAllBtn").addEventListener("click", submitAllPublicForms);
+  }
+
+  function emptyPublicForm(){
+    return { _editingId:null, name:"", note:"", general:"", positive:"", negative:"", modification:"" };
+  }
+
+  function renderPublicForms(forms){
+    const wrap = document.getElementById("publicForms");
+    wrap.innerHTML = forms.map((f, idx) => `
+      <div class="public-form-card" data-form-idx="${idx}" ${f._editingId ? `data-editing="${escHtml(f._editingId)}"` : ""}>
+        <h3>
+          ${f._editingId ? "✏️ Modification d'un avis en attente" : "Avis n°" + (idx+1)}
+          ${forms.length > 1 && !f._editingId ? `<button type="button" class="remove-form-btn" data-rm="${idx}" title="Retirer ce formulaire">×</button>` : ""}
+        </h3>
+        <label>Ton pseudo / prénom <span class="req">*</span></label>
+        <input type="text" data-field="name" value="${escHtml(f.name)}" placeholder="Ex: Léa">
+        <label>Note globale (de 0 à 10) <span class="req">*</span></label>
+        <input type="number" class="note-input" data-field="note" min="0" max="10" step="1" value="${escHtml(f.note)}">
+        <label>Avis général</label>
+        <textarea data-field="general" placeholder="En quelques mots, ton ressenti...">${escHtml(f.general)}</textarea>
+        <label>Ce que tu as aimé</label>
+        <textarea data-field="positive" placeholder="Les points positifs...">${escHtml(f.positive)}</textarea>
+        <label>Ce qui t'a moins plu</label>
+        <textarea data-field="negative" placeholder="Les points négatifs...">${escHtml(f.negative)}</textarea>
+        <label>Tes idées d'amélioration</label>
+        <textarea data-field="modification" placeholder="Tes suggestions...">${escHtml(f.modification)}</textarea>
+      </div>
+    `).join("");
+    wrap.querySelectorAll(".remove-form-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const cur = collectPublicForms({ stripEmpty:false });
+        cur.splice(parseInt(btn.dataset.rm, 10), 1);
+        renderPublicForms(cur.length ? cur : [emptyPublicForm()]);
+      });
+    });
+  }
+
+  function collectPublicForms({ stripEmpty } = { stripEmpty:false }){
+    const cards = document.querySelectorAll(".public-form-card");
+    const out = [];
+    cards.forEach(card => {
+      const f = { _editingId: card.dataset.editing || null };
+      card.querySelectorAll("[data-field]").forEach(el => {
+        f[el.dataset.field] = el.value;
+      });
+      if(stripEmpty){
+        if(!(f.name||"").trim() && !(f.note||"").trim() && !(f.general||"").trim()
+           && !(f.positive||"").trim() && !(f.negative||"").trim() && !(f.modification||"").trim()) return;
+      }
+      out.push(f);
+    });
+    return out;
+  }
+
+  function submissionFromForm(f){
+    const note = Math.max(0, Math.min(10, parseInt(f.note, 10) || 0));
+    return {
+      id: f._editingId || uid(),
+      name: (f.name||"").trim(),
+      note,
+      general: (f.general||"").trim(),
+      positives: (f.positive||"").trim() ? [f.positive.trim()] : [],
+      negatives: (f.negative||"").trim() ? [f.negative.trim()] : [],
+      modifications: (f.modification||"").trim() ? [f.modification.trim()] : [],
+      submittedAt: f._editingId ? undefined : Date.now(),
+      updatedAt: Date.now()
+    };
+  }
+
+  async function submitAllPublicForms(){
+    const forms = collectPublicForms({ stripEmpty:false });
+    // Validation: name + note required for each non-empty form
+    const valid = [];
+    for(const f of forms){
+      const hasAnyText = (f.general||f.positive||f.negative||f.modification||"").trim().length > 0;
+      const hasName = (f.name||"").trim().length > 0;
+      const noteN = parseInt(f.note, 10);
+      const hasNote = !isNaN(noteN) && noteN >= 0 && noteN <= 10;
+      if(!hasName && !hasAnyText && !hasNote) continue; // empty form, skip silently
+      if(!hasName){ alert("Tu dois renseigner ton pseudo dans chaque avis."); return; }
+      if(!hasNote){ alert("La note (entre 0 et 10) est obligatoire pour chaque avis."); return; }
+      valid.push(f);
+    }
+    if(!valid.length){ alert("Remplis au moins un avis avant d'envoyer."); return; }
+
+    // Make sure we have the latest state before writing.
+    try {
+      const { docRef, getDoc } = await new Promise((res) => {
+        if(window.__FB) res(window.__FB);
+        else window.addEventListener("firebase-ready", () => res(window.__FB), { once:true });
+      });
+      const snap = await getDoc(docRef);
+      if(snap.exists()){
+        const d = snap.data();
+        if(d && typeof d.json === "string") applyState(d.json);
+      }
+    } catch(e){ console.warn("Pre-submit fetch failed:", e); }
+
+    // Apply each submission: spam check, then pending or trash insertion.
+    const submittedIds = [];
+    for(const f of valid){
+      const sub = submissionFromForm(f);
+      // remove any previous version with the same id
+      state.pending = (state.pending || []).filter(p => p.id !== sub.id);
+      state.trash   = (state.trash   || []).filter(p => p.id !== sub.id);
+      if(isSpam(sub)){
+        // matches a spam filter -> drop silently (we still record the id for user feedback)
+        submittedIds.push(sub.id);
+        continue;
+      }
+      state.pending.push(sub);
+      submittedIds.push(sub.id);
+      addMySubmission(sub.id);
+    }
+
+    // Force a Firebase write even though we're not in "edit mode" on this page.
+    try {
+      const { docRef, setDoc } = window.__FB;
+      await setDoc(docRef, { json: JSON.stringify(state), updatedAt: Date.now() });
+    } catch(e){
+      console.warn("Public submit save failed:", e);
+      alert("Désolé, ton avis n'a pas pu être enregistré. Vérifie ta connexion et réessaie.");
+      return;
+    }
+
+    // UI feedback
+    const ok = document.getElementById("publicSuccess");
+    ok.style.display = "block";
+    ok.innerHTML = "✓ Merci ! Ton avis a bien été envoyé et sera publié après modération. "
+      + "<a id='resetPublicLink'>Déposer un nouvel avis</a>";
+    document.getElementById("resetPublicLink").addEventListener("click", () => {
+      ok.style.display = "none";
+      renderPublicForms([emptyPublicForm()]);
+      renderMySubmissions();
+      window.scrollTo({ top:0, behavior:"smooth" });
+    });
+    renderPublicForms([emptyPublicForm()]);
+    renderMySubmissions();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+
+  /* "Mes avis" panel — lists what this device has submitted, lets edit pending ones */
+  function renderMySubmissions(){
+    const mine = getMySubmissions();
+    const wrap = document.getElementById("mySubmissions");
+    const list = document.getElementById("mySubmissionsList");
+    if(!mine.length){ wrap.style.display = "none"; return; }
+    const items = mine.map(id => {
+      const p = findPending(id);
+      const t = findTrash(id);
+      const pub = (state.reviewers || []).find(r => r._publicSourceId === id);
+      let label, status;
+      if(p){ label = p.name + " — note " + p.note + "/10"; status = '<span class="badge-status pending">En attente</span>'; }
+      else if(pub){ label = pub.name + " — note " + pub.fun + "/10"; status = '<span class="badge-status published">Publié</span>'; }
+      else if(t){ label = t.name + " — note " + t.note + "/10"; status = '<span class="badge-status rejected">Rejeté</span>'; }
+      else return ""; // gone — silently ignore
+      const editBtn = p ? `<button data-edit="${id}" type="button">Modifier</button>` : "";
+      return `<div class="my-submission-item"><span>${escHtml(label)} ${status}</span>${editBtn}</div>`;
+    }).filter(Boolean).join("");
+    if(!items){ wrap.style.display = "none"; return; }
+    wrap.style.display = "block";
+    list.innerHTML = items;
+    list.querySelectorAll("[data-edit]").forEach(btn => {
+      btn.addEventListener("click", () => loadPendingIntoForm(btn.dataset.edit));
+    });
+  }
+
+  function loadPendingIntoForm(id){
+    const p = findPending(id);
+    if(!p) return;
+    renderPublicForms([{
+      _editingId: p.id,
+      name: p.name, note: String(p.note),
+      general: p.general || "",
+      positive: (p.positives||[])[0] || "",
+      negative: (p.negatives||[])[0] || "",
+      modification: (p.modifications||[])[0] || ""
+    }]);
+    window.scrollTo({ top:document.querySelector(".public-form-card").offsetTop - 20, behavior:"smooth" });
+  }
+
+  /* ═══════════════ ADMIN MODAL ═══════════════ */
+
+  function setupAdmin(){
+    const btn = document.getElementById("adminBtn");
+    const modal = document.getElementById("adminModal");
+    const close = document.getElementById("adminModalClose");
+    btn.addEventListener("click", openAdmin);
+    close.addEventListener("click", () => modal.classList.remove("open"));
+    modal.addEventListener("click", e => { if(e.target === modal) modal.classList.remove("open"); });
+    // sub-tab switching
+    document.querySelectorAll(".subtab").forEach(t => {
+      t.addEventListener("click", () => {
+        document.querySelectorAll(".subtab").forEach(x => x.classList.remove("active"));
+        t.classList.add("active");
+        const which = t.dataset.subtab;
+        document.querySelectorAll(".subtab-panel").forEach(p => {
+          p.style.display = (p.dataset.panel === which) ? "" : "none";
+        });
+        if(which === "qr") renderQrPanel();
+      });
+    });
+  }
+  function openAdmin(){
+    renderPendingList();
+    renderTrashList();
+    renderSpamList();
+    document.getElementById("adminModal").classList.add("open");
+  }
+
+  function pendingCardHtml(p, where){
+    const sections = [];
+    if(p.general)       sections.push(["Avis général", p.general]);
+    if((p.positives||[])[0])     sections.push(["Points positifs", p.positives[0]]);
+    if((p.negatives||[])[0])     sections.push(["Points négatifs", p.negatives[0]]);
+    if((p.modifications||[])[0]) sections.push(["Idée d'amélioration", p.modifications[0]]);
+    const sectionsHtml = sections.map(([l,t]) =>
+      `<div class="pending-section"><div class="pending-section-label">${l}</div><div class="pending-section-text">${escHtml(t)}</div></div>`
+    ).join("") || `<div class="pending-section"><div class="pending-section-text" style="color:var(--ink-faint);font-style:italic">Aucun commentaire écrit, juste une note.</div></div>`;
+    let actions;
+    if(where === "pending"){
+      actions = `
+        <button class="btn-primary" data-act="publish" data-id="${p.id}">✓ Publier tel quel</button>
+        <button data-act="edit-publish" data-id="${p.id}">✏️ Modifier puis publier</button>
+        <button class="btn-danger" data-act="reject" data-id="${p.id}">🗑️ Rejeter</button>
+      `;
+    } else { // trash
+      actions = `
+        <button data-act="restore" data-id="${p.id}">↶ Restaurer (vers En attente)</button>
+        <button class="btn-danger" data-act="delete" data-id="${p.id}">🗑️ Supprimer définitivement</button>
+      `;
+    }
+    return `<div class="pending-card">
+      <div class="pending-card-head">
+        <div><span class="pending-name">${escHtml(p.name)}</span> <span class="pending-note">${p.note}/10</span></div>
+        <div class="pending-date">Reçu le ${formatDate(p.submittedAt)}${p.updatedAt && p.updatedAt !== p.submittedAt ? " · modifié " + formatDate(p.updatedAt) : ""}</div>
+      </div>
+      ${sectionsHtml}
+      <div class="pending-actions">${actions}</div>
+    </div>`;
+  }
+
+  function renderPendingList(){
+    const wrap = document.getElementById("pendingList");
+    const list = state.pending || [];
+    document.getElementById("countPending").textContent = list.length;
+    if(!list.length){ wrap.innerHTML = '<div class="empty-state">Aucun avis en attente.</div>'; return; }
+    const sorted = [...list].sort((a,b) => (b.submittedAt||0) - (a.submittedAt||0));
+    wrap.innerHTML = sorted.map(p => pendingCardHtml(p, "pending")).join("");
+    wrap.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => handlePendingAction(b.dataset.act, b.dataset.id)));
+  }
+  function renderTrashList(){
+    const wrap = document.getElementById("trashList");
+    const list = state.trash || [];
+    document.getElementById("countTrash").textContent = list.length;
+    if(!list.length){ wrap.innerHTML = '<div class="empty-state">La corbeille est vide.</div>'; return; }
+    const sorted = [...list].sort((a,b) => (b.submittedAt||0) - (a.submittedAt||0));
+    wrap.innerHTML = sorted.map(p => pendingCardHtml(p, "trash")).join("");
+    wrap.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => handlePendingAction(b.dataset.act, b.dataset.id)));
+  }
+
+  function handlePendingAction(act, id){
+    const p = findPending(id) || findTrash(id);
+    if(!p) return;
+    if(act === "publish")         publishPending(p);
+    else if(act === "edit-publish") openEditPublish(p);
+    else if(act === "reject")     rejectPending(p);
+    else if(act === "restore")    restoreFromTrash(p);
+    else if(act === "delete")     deleteForever(p);
+  }
+
+  function publishPending(p, overrides){
+    const data = overrides || {};
+    const note = (data.note != null) ? data.note : p.note;
+    const r = newReviewer();
+    r.name = (data.name != null ? data.name : p.name);
+    r.fun = note; r.strategy = note; r.complexity = note;
+    r.positives    = nonEmpty(data.positives    || p.positives    || []).slice() ;
+    if(!r.positives.length) r.positives = [""];
+    r.negatives    = (data.negatives || p.negatives || []).filter(x => (typeof x === "string" ? x.trim() : (x.text||"").trim()));
+    r.negatives    = normNeg(r.negatives);
+    r.modifications= nonEmpty(data.modifications || p.modifications || []).slice();
+    if(!r.modifications.length) r.modifications = [""];
+    r._publicSourceId = p.id;
+    r._publicOriginal = {
+      name: p.name, note: p.note, general: p.general,
+      positives: p.positives, negatives: p.negatives, modifications: p.modifications,
+      submittedAt: p.submittedAt
+    };
+    if(data.editedNote != null) r._editedNote = data.editedNote;
+    state.reviewers.push(r);
+    state.pending = (state.pending || []).filter(x => x.id !== p.id);
+    state.trash   = (state.trash   || []).filter(x => x.id !== p.id);
+    save();
+    renderPendingList(); renderTrashList();
+    renderGeneral(); render();
+    updatePendingBubble();
+  }
+
+  function rejectPending(p){
+    state.pending = (state.pending || []).filter(x => x.id !== p.id);
+    if(!findTrash(p.id)) state.trash.push(p);
+    save();
+    // re-check spam: if the rejected item also matches a spam filter, delete it for good
+    if(isSpam(p)){
+      state.trash = state.trash.filter(x => x.id !== p.id);
+      save();
+    }
+    renderPendingList(); renderTrashList();
+    updatePendingBubble();
+  }
+  function restoreFromTrash(p){
+    state.trash = (state.trash || []).filter(x => x.id !== p.id);
+    if(!findPending(p.id)) state.pending.push(p);
+    save();
+    renderPendingList(); renderTrashList();
+    updatePendingBubble();
+  }
+  function deleteForever(p){
+    if(!confirm("Supprimer définitivement cet avis de " + (p.name || "anonyme") + " ? Cette action est irréversible.")) return;
+    state.pending = (state.pending || []).filter(x => x.id !== p.id);
+    state.trash   = (state.trash   || []).filter(x => x.id !== p.id);
+    save();
+    renderPendingList(); renderTrashList();
+    updatePendingBubble();
+  }
+
+  /* "Modifier puis publier" — replaces the pending card UI with a mini edit form */
+  function openEditPublish(p){
+    const cards = document.querySelectorAll("#pendingList .pending-card");
+    let target = null;
+    cards.forEach(c => { if(c.querySelector(`[data-id="${p.id}"]`)) target = c; });
+    if(!target) return;
+    target.innerHTML = `
+      <div class="pending-card-head">
+        <span class="pending-name">Modifier l'avis de ${escHtml(p.name)}</span>
+      </div>
+      <label style="font-size:12px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:8px;display:block">Pseudo</label>
+      <input type="text" id="ep_name" value="${escHtml(p.name)}" style="width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin-top:3px">
+      <label style="font-size:12px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:8px;display:block">Note publiée /10</label>
+      <input type="number" id="ep_note" value="${p.note}" min="0" max="10" style="width:90px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin-top:3px;font-weight:700;text-align:center">
+      <label style="font-size:12px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:8px;display:block">Points positifs (un par ligne)</label>
+      <textarea id="ep_pos" style="width:100%;min-height:60px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;font-family:inherit;margin-top:3px">${escHtml((p.positives||[]).join("\n"))}</textarea>
+      <label style="font-size:12px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:8px;display:block">Points négatifs (un par ligne)</label>
+      <textarea id="ep_neg" style="width:100%;min-height:60px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;font-family:inherit;margin-top:3px">${escHtml((p.negatives||[]).map(n => typeof n === "string" ? n : n.text).join("\n"))}</textarea>
+      <label style="font-size:12px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:8px;display:block">Idées d'amélioration (une par ligne)</label>
+      <textarea id="ep_mod" style="width:100%;min-height:60px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;font-family:inherit;margin-top:3px">${escHtml((p.modifications||[]).join("\n"))}</textarea>
+      <div class="pending-actions">
+        <button class="btn-primary" id="ep_confirm">✓ Publier ces modifications</button>
+        <button id="ep_cancel">Annuler</button>
+      </div>`;
+    target.querySelector("#ep_cancel").addEventListener("click", renderPendingList);
+    target.querySelector("#ep_confirm").addEventListener("click", () => {
+      const note = Math.max(0, Math.min(10, parseInt(target.querySelector("#ep_note").value, 10) || 0));
+      publishPending(p, {
+        name: target.querySelector("#ep_name").value.trim() || p.name,
+        note,
+        editedNote: note,
+        positives: target.querySelector("#ep_pos").value.split("\n").map(s => s.trim()).filter(Boolean),
+        negatives: target.querySelector("#ep_neg").value.split("\n").map(s => s.trim()).filter(Boolean),
+        modifications: target.querySelector("#ep_mod").value.split("\n").map(s => s.trim()).filter(Boolean)
+      });
+    });
+  }
+
+  /* ═══════════════ SPAM FILTERS PANEL ═══════════════ */
+
+  function renderSpamList(){
+    const ul = document.getElementById("spamList");
+    const filters = state.spamFilters || [];
+    ul.innerHTML = filters.map((f, i) => `
+      <li class="spam-item">
+        <input type="text" data-spam-idx="${i}" value="${escHtml(f)}" placeholder="ex: viagra, http://, mot interdit">
+        <button data-rm-spam="${i}" title="Retirer ce filtre">×</button>
+      </li>
+    `).join("");
+    ul.querySelectorAll("[data-spam-idx]").forEach(inp => {
+      inp.addEventListener("input", () => {
+        state.spamFilters[parseInt(inp.dataset.spamIdx, 10)] = inp.value;
+        save();
+      });
+    });
+    ul.querySelectorAll("[data-rm-spam]").forEach(b => {
+      b.addEventListener("click", () => {
+        state.spamFilters.splice(parseInt(b.dataset.rmSpam, 10), 1);
+        save(); renderSpamList();
+      });
+    });
+  }
+  function setupSpamPanel(){
+    document.getElementById("addSpamFilterBtn").addEventListener("click", () => {
+      if(!Array.isArray(state.spamFilters)) state.spamFilters = [];
+      state.spamFilters.push("");
+      save(); renderSpamList();
+    });
+  }
+
+  /* ═══════════════ QR CODE PANEL ═══════════════ */
+
+  function defaultPublicUrl(){
+    const u = new URL(window.location.href);
+    u.search = "?" + PUBLIC_PARAM;
+    u.hash = "";
+    return u.toString();
+  }
+  function renderQrPanel(){
+    const cfg = state.qrConfig;
+    if(!cfg.url) cfg.url = defaultPublicUrl();
+    document.getElementById("qrUrlInput").value     = cfg.url;
+    document.getElementById("qrColorDark").value    = cfg.colorDark  || "#000000";
+    document.getElementById("qrColorLight").value   = cfg.colorLight || "#ffffff";
+    document.getElementById("qrSizeInput").value    = cfg.size       || 320;
+    drawQr();
+  }
+  function drawQr(){
+    const cfg = state.qrConfig;
+    const canvas = document.getElementById("qrCanvas");
+    if(!window.QRCode){ canvas.replaceWith(Object.assign(document.createElement("div"), { textContent:"Erreur : librairie QR non chargée." })); return; }
+    QRCode.toCanvas(canvas, cfg.url || defaultPublicUrl(), {
+      width: cfg.size || 320,
+      margin: 2,
+      color: { dark: cfg.colorDark || "#000000", light: cfg.colorLight || "#ffffff" },
+      errorCorrectionLevel: cfg.logo ? "H" : "M"
+    }, (err) => {
+      if(err){ console.warn(err); return; }
+      if(cfg.logo){
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.onload = () => {
+          const w = canvas.width, s = Math.round(w * 0.22);
+          const x = Math.round((w - s) / 2), y = x;
+          ctx.fillStyle = cfg.colorLight || "#ffffff";
+          ctx.fillRect(x - 4, y - 4, s + 8, s + 8);
+          ctx.drawImage(img, x, y, s, s);
+        };
+        img.src = cfg.logo;
+      }
+    });
+  }
+  function setupQrPanel(){
+    document.getElementById("qrUrlInput").addEventListener("input", e => {
+      state.qrConfig.url = e.target.value; save(); drawQr();
+    });
+    document.getElementById("qrColorDark").addEventListener("input", e => {
+      state.qrConfig.colorDark = e.target.value; save(); drawQr();
+    });
+    document.getElementById("qrColorLight").addEventListener("input", e => {
+      state.qrConfig.colorLight = e.target.value; save(); drawQr();
+    });
+    document.getElementById("qrSizeInput").addEventListener("input", e => {
+      state.qrConfig.size = parseInt(e.target.value, 10) || 320; save(); drawQr();
+    });
+    document.getElementById("qrLogoInput").addEventListener("change", async e => {
+      const file = e.target.files[0]; if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => { state.qrConfig.logo = reader.result; save(); drawQr(); };
+      reader.readAsDataURL(file);
+    });
+    document.getElementById("qrLogoRemove").addEventListener("click", () => {
+      state.qrConfig.logo = ""; document.getElementById("qrLogoInput").value = ""; save(); drawQr();
+    });
+    document.getElementById("qrDownloadBtn").addEventListener("click", () => {
+      const canvas = document.getElementById("qrCanvas");
+      const link = document.createElement("a");
+      link.download = "qr-avis-" + (state.gameName || "jeu").toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
+  }
+
+  /* ═══════════════ "ORIGINAL" DISCLOSURE on published reviewer cards ═══════════════ */
+
+  /* After every render(), inject a ▶ disclosure showing the original public submission. */
+  function injectOriginalDisclosures(){
+    document.querySelectorAll("#cards .card").forEach(card => {
+      const id = card.dataset.id;
+      const r = (state.reviewers || []).find(x => x.id === id);
+      if(!r || !r._publicSourceId || !r._publicOriginal) return;
+      if(card.querySelector(".original-disclose")) return; // already added
+      const o = r._publicOriginal;
+      const diffs = [];
+      const currentPos = nonEmpty(r.positives).map(s => typeof s === "string" ? s : (s.text||"")).join(" \n ");
+      const origPos = (o.positives || []).map(s => typeof s === "string" ? s : (s.text||"")).join(" \n ");
+      const currentNeg = nonEmpty(r.negatives).map(s => typeof s === "string" ? s : (s.text||"")).join(" \n ");
+      const origNeg = (o.negatives || []).map(s => typeof s === "string" ? s : (s.text||"")).join(" \n ");
+      const currentMod = nonEmpty(r.modifications).map(s => typeof s === "string" ? s : (s.text||"")).join(" \n ");
+      const origMod = (o.modifications || []).map(s => typeof s === "string" ? s : (s.text||"")).join(" \n ");
+      const noteChanged = (Number(r.fun) !== Number(o.note));
+      const nameChanged = (r.name || "") !== (o.name || "");
+      function row(label, value, isEmpty, changed){
+        const cls = "diff-val" + (isEmpty ? " empty" : "") + (changed ? " diff-changed" : "");
+        return `<div class="diff-row"><span class="diff-label">${label}</span><span class="${cls}">${escHtml(isEmpty ? "(vide)" : value)}</span></div>`;
+      }
+      const html = `
+        <details class="original-disclose">
+          <summary>Voir l'avis original déposé par le joueur</summary>
+          <div class="original-body">
+            <div style="font-size:11.5px;color:var(--ink-faint);margin-bottom:6px">Soumis le ${formatDate(o.submittedAt)}</div>
+            ${row("Pseudo original", o.name, !o.name, nameChanged)}
+            ${row("Note originale", o.note + "/10", false, noteChanged)}
+            ${row("Avis général", o.general, !o.general, false)}
+            ${row("Points positifs", origPos, !origPos, origPos !== currentPos)}
+            ${row("Points négatifs", origNeg, !origNeg, origNeg !== currentNeg)}
+            ${row("Idée d'amélioration", origMod, !origMod, origMod !== currentMod)}
+          </div>
+        </details>`;
+      const body = card.querySelector(".card-body") || card;
+      body.insertAdjacentHTML("beforeend", html);
+    });
+  }
+
+  /* Patch the existing render() so disclosures are re-added after each rerender. */
+  const _origRender = render;
+  render = function(){ _origRender.apply(this, arguments); injectOriginalDisclosures(); updatePendingBubble(); };
+
+  /* ═══════════════ INIT (public + admin) ═══════════════ */
+  function initPublicAndAdmin(){
+    // ensure new arrays/config exist even on a brand new state
+    if(!Array.isArray(state.pending)) state.pending = [];
+    if(!Array.isArray(state.trash))   state.trash = [];
+    if(!Array.isArray(state.spamFilters)) state.spamFilters = [];
+    if(!state.qrConfig) state.qrConfig = { url:"", colorDark:"#000000", colorLight:"#ffffff", size:320, logo:"" };
+
+    if(isPublicView()){
+      setupPublicView();
+    } else {
+      setupAdmin();
+      setupSpamPanel();
+      setupQrPanel();
+      updatePendingBubble();
+      injectOriginalDisclosures();
+    }
+  }
+
+  /* Hook this into init: run after the main initializer below */
+  document.addEventListener("DOMContentLoaded", () => {
+    // wait a tick to ensure load() finished
+    setTimeout(initPublicAndAdmin, 50);
+  });
+
+  /* Also re-render admin/bubble whenever a Firebase snapshot updates state */
+  window.addEventListener("state-synced", () => {
+    if(isPublicView()){ renderMySubmissions(); return; }
+    updatePendingBubble();
+    const modal = document.getElementById("adminModal");
+    if(modal && modal.classList.contains("open")){
+      renderPendingList(); renderTrashList();
+    }
+    injectOriginalDisclosures();
+  });
+
   /* ---------- init ---------- */
   (async function init(){
     await load();
@@ -1681,6 +2302,7 @@
     if(sharedDataAvailable) shareNotice.hidden = false;
     setupEditToggle();
     setupRealtimeSync();
+    initPublicAndAdmin();
   })();
 })();
 </script></body></html>
